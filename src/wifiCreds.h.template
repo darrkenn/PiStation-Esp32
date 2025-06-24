@@ -1,0 +1,13 @@
+//REMOVE THE .template
+
+#ifndef WIFICREDS_H_TEMPLATE_H
+#define WIFICREDS_H_TEMPLATE_H
+
+
+#define WIFI_SSID "YOUR WIFI SSID"
+#define WIFI_PASSWORD "YOUR WIFI PASSWORD"
+#define WIFI_IP 192, 168, 1, //Your port here
+#define WIFI_GATEWAY 192, 168, 1, 1
+#define WIFI_SUBNET 255, 255, 255, 0
+
+#endif //WIFICREDS_H_TEMPLATE_H

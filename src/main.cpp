@@ -20,9 +20,9 @@ unsigned long lastCall;
 int temp;
 int humid;
 
-IPAddress staticIP(192, 168, 1, 248);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 255, 0);
+IPAddress staticIP(WIFI_IP);
+IPAddress gateway(WIFI_GATEWAY);
+IPAddress subnet(WIFI_SUBNET);
 
 
 //Initialisation
@@ -117,7 +117,6 @@ void setup() {
 
 void loop() {
     server.handleClient();
-    Serial.print("loop");
 }
 
 
