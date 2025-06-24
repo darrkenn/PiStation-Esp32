@@ -57,17 +57,10 @@ float dhtReadHumidity() {
 }
 
 
-void createJson (const char *name,const int value) {
+void createJson (const int value) {
     jsonDoc.clear();
-    jsonDoc["name"] = name;
     jsonDoc["value"] = value;
     serializeJson(jsonDoc, buffer);
-}
-
-void addJsonValue (const char *name, const int value) {
-    JsonObject obj = jsonDoc.createNestedObject();
-    obj["name"] = name;
-    obj["value"] = value;
 }
 
 void getJsonValues() {
@@ -75,8 +68,8 @@ void getJsonValues() {
     temp = dht.readTemperature();
     Serial.println("getJsonValues");
     jsonDoc.clear();
-    addJsonValue("temperature", temp);
-    addJsonValue("humidity", humid);
+    jsonDoc["temperature"] = temp;
+    jsonDoc["humidity"] = humid;
     serializeJson(jsonDoc, buffer);
     server.send(200, "application/json", buffer);
     delay(1000);
@@ -124,6 +117,7 @@ void setup() {
 
 void loop() {
     server.handleClient();
+    Serial.print("loop");
 }
 
 
