@@ -72,7 +72,7 @@ void getJsonValues() {
     jsonDoc["humidity"] = humid;
     serializeJson(jsonDoc, buffer);
     server.send(200, "application/json", buffer);
-    delay(1000);
+    delay(10000);
     Serial.println("Sleeping...");
     esp_sleep_enable_timer_wakeup(9 * 60 * 1000000ULL);
     esp_deep_sleep_start();
