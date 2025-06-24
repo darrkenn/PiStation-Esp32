@@ -20,6 +20,10 @@ unsigned long lastCall;
 int temp;
 int humid;
 
+IPAddress staticIP(192, 168, 1, 248);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+
 
 //Initialisation
 WebServer server(80);
@@ -75,6 +79,10 @@ void getJsonValues() {
     addJsonValue("humidity", humid);
     serializeJson(jsonDoc, buffer);
     server.send(200, "application/json", buffer);
+    delay(1000);
+    Serial.println("Sleeping...");
+    esp_sleep_enable_timer_wakeup(9 * 60 * 1000000ULL);
+    esp_deep_sleep_start();
 }
 
 
@@ -94,9 +102,15 @@ void setup() {
         delay(500);
         Serial.print(".");
     }
+    if(!WiFi.config(staticIP, gateway, subnet)) {
+        Serial.println("Failed to configure Static IP");
+    } else {
+        Serial.println("Static IP configured!");
+    }
+
     Serial.println("Connected Successfully!");
     Serial.println("IP: ");
-    Serial.println(WiFi.localIP());
+    Serial.println(WiFi.localIP());\
 
 
 
@@ -110,17 +124,6 @@ void setup() {
 
 void loop() {
     server.handleClient();
-
-
-    Serial.println(server.client().localIP());
-    if (millis() > lastCall + callDelay ) {
-        lastCall = millis();
-        temp = dht.readTemperature();
-        humid = dhtReadHumidity();
-
-    }
-
-    delay(2000);
 }
 
 
