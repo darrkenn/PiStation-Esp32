@@ -98,7 +98,7 @@ void setup() {
     if(!WiFi.config(staticIP, gateway, subnet)) {
         Serial.println("Failed to configure Static IP");
     } else {
-        Serial.println("Static IP configured!");
+        Serial.println("Static IP configured!!");
     }
 
     Serial.println("Connected Successfully!");
