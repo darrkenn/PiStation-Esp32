@@ -8,7 +8,7 @@
 #include <WiFiManager.h>
 #include <Adafruit_BMP280.h>
 
-#define DHT_PIN 4
+#define DHT_PIN 2
 #define WATER_PIN 36
 
 
@@ -29,6 +29,7 @@ float pressureHPA;
 float airPressure;
 String isRaining;
 
+
 enum IsRaining {
     No,
     Yes
@@ -37,7 +38,6 @@ enum IsRaining {
 IPAddress staticIP(WIFI_IP);
 IPAddress gateway(WIFI_GATEWAY);
 IPAddress subnet(WIFI_SUBNET);
-
 
 //Initialisation
 WebServer server(80);
@@ -127,10 +127,10 @@ void getJsonValues() {
     jsonDoc["airPressure"] = airPressure;
     serializeJson(jsonDoc, buffer);
     server.send(200, "application/json", buffer);
-    delay(10000);
-    Serial.println("Sleeping...");
-    esp_sleep_enable_timer_wakeup(9 * 60 * 1000000ULL);
-    esp_deep_sleep_start();
+    // delay(10000);
+    // Serial.println("Sleeping...");
+    // esp_sleep_enable_timer_wakeup(9 * 60 * 1000000ULL);
+    // esp_deep_sleep_start();
 }
 
 
@@ -186,25 +186,6 @@ void setup() {
 
 void loop() {
     server.handleClient();
-    if (bmp.takeForcedMeasurement()) {
-        // can now print out the new measurements
-        Serial.print(F("Temperature = "));
-        Serial.print(bmp.readTemperature());
-        Serial.println(" *C");
-
-        Serial.print(F("Pressure = "));
-        Serial.print(bmp.readPressure());
-        Serial.println(" Pa");
-
-        Serial.print(F("Approx altitude = "));
-        Serial.print(bmp.readAltitude(1013.25)); /* Adjusted to local forecast! */
-        Serial.println(" m");
-
-        Serial.println();
-        delay(2000);
-    } else {
-        Serial.println("Forced measurement failed!");
-    }
 }
 
 
