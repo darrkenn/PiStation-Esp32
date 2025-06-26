@@ -8,7 +8,7 @@
 #include <WiFiManager.h>
 #include <Adafruit_BMP280.h>
 
-#define DHT_PIN 2
+#define DHT_PIN 4
 #define WATER_PIN 36
 
 
@@ -114,26 +114,29 @@ void createJson (const int value) {
 }
 
 void getJsonValues() {
-    humid = dht.readHumidity();
-    temp = dht.readTemperature();
+    humid = static_cast<int>(dht.readHumidity());
+    temp = static_cast<int>(dht.readTemperature());
     isRaining = getRainLevel();
     airPressure = bmpReadPressure();
 
-    Serial.println("getJsonValues");
+    Serial.println("Client connected: ");
+    Serial.print(server.client().remoteIP());
     jsonDoc.clear();
     jsonDoc["temperature"] = temp;
+    Serial.println("Temperature: " + String(temp));
     jsonDoc["humidity"] = humid;
+    Serial.println("Humidity: " + String(humid));
     jsonDoc["rain"] = isRaining;
+    Serial.println("Rain: " + String(isRaining));
     jsonDoc["airPressure"] = airPressure;
+    Serial.println("AirPressure: " + String(airPressure));
     serializeJson(jsonDoc, buffer);
     server.send(200, "application/json", buffer);
     delay(1000);
-    Serial.println("Sleeping...");
-    esp_sleep_enable_timer_wakeup(9 * 60 * 1000000ULL);
-    esp_deep_sleep_start();
+    // Serial.println("Sleeping...");
+    // esp_sleep_enable_timer_wakeup(9 * 60 * 1000000ULL);
+    // esp_deep_sleep_start();
 }
-
-
 
 
 void setup() {
